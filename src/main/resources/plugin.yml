@@ -1,0 +1,9 @@
+name: ParkourTag
+version: 1.0.0
+description: ParkourTag is a 3v1 PvP game
+
+author: Abdymazhit
+website: https://github.com/abdymazhit
+
+main: me.abdymazhit.parkourtag.ParkourTag
+api-version: '1.18'
