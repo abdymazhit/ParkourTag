@@ -1,0 +1,13 @@
+mapName: Test
+
+# Min - 2, default - 4
+playersInTeam: 2
+
+# Min - 2, default - 8
+teams:
+  -
+    name: Red
+    color: &c
+  -
+    name: Blue
+    color: &b
