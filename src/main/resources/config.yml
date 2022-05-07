@@ -1,7 +1,20 @@
+# Map name
 mapName: Test
 
 # Min - 2, default - 4
 playersInTeam: 2
+
+# Time until the game starts when there are enough players, min - 1
+gameStartTime: 15
+
+# Hunter selection time before each round, min - 1
+hunterSelectionTime: 15
+
+# Time until the round starts, min - 1
+roundStartTime: 5
+
+# Time of each round, min - 1
+roundTime: 60
 
 # Min - 2, default - 8
 teams:
