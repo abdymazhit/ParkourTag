@@ -18,52 +18,51 @@ public class GameManager {
     /**
      * Represents the game state
      */
-    private GameState gameState;
+    private static GameState gameState = GameState.WAITING;
     /**
      * Represents the game round number
      */
-    private int round;
+    private static int round = 0;
     /**
      * Represents a list of waiting game players
      */
-    private final List<Player> waitingGamePlayers;
+    private static final List<Player> waitingGamePlayers = new ArrayList<>();
     /**
      * Represents a list of spectators
      */
-    private final List<Player> spectators;
+    private static final List<Player> spectators = new ArrayList<>();
     /**
-     * Represents a team configurations
+     * Represents a teams configuration
      */
-    private final Map<Team, TeamConfig> teamConfigs;
+    private static final Map<Team, TeamConfig> teamsConfig = new HashMap<>();
 
     /**
-     * Creates a game manager
+     * Setups teams config
+     * @param teams List of teams
      */
-    public GameManager() {
-        gameState = GameState.WAITING;
-        round = 0;
-        waitingGamePlayers = new ArrayList<>();
-        spectators = new ArrayList<>();
-        teamConfigs = new HashMap<>();
+    public static void setupTeamsConfig(List<Team> teams) {
+        for(Team team : teams) {
+            teamsConfig.put(team, null);
+        }
     }
 
     /**
      * Sets the game state
-     * @param gameState the game state
+     * @param gameState Game state
      */
-    public void setGameState(GameState gameState) {
+    public static void setGameState(GameState gameState) {
         if(gameState.equals(GameState.GAME)) {
             waitingGamePlayers.clear();
         }
-        this.gameState = gameState;
+        GameManager.gameState = gameState;
     }
 
     /**
      * Starts the next round of the game
      */
-    public void startNextRound() {
+    public static void startNextRound() {
         round++;
-        for(TeamConfig teamConfig : teamConfigs.values()) {
+        for(TeamConfig teamConfig : teamsConfig.values()) {
             teamConfig.clearPlayerRoles();
         }
     }
@@ -72,16 +71,15 @@ public class GameManager {
      * Gets the game state
      * @return the game state
      */
-    public GameState getGameState() {
+    public static GameState getGameState() {
         return gameState;
     }
-
 
     /**
      * Gets the game round number
      * @return the game round number
      */
-    public int getRound() {
+    public static int getRound() {
         return round;
     }
 
@@ -89,7 +87,7 @@ public class GameManager {
      * Gets a list of waiting game players
      * @return a list of waiting game players
      */
-    public List<Player> getWaitingGamePlayers() {
+    public static List<Player> getWaitingGamePlayers() {
         return waitingGamePlayers;
     }
 
@@ -97,15 +95,15 @@ public class GameManager {
      * Gets a list of spectators
      * @return a list of spectators
      */
-    public List<Player> getSpectators() {
+    public static List<Player> getSpectators() {
         return spectators;
     }
 
     /**
-     * Gets a team configurations
-     * @return a team configurations
+     * Gets a teams configuration
+     * @return a teams configuration
      */
-    public Map<Team, TeamConfig> getTeamConfigs() {
-        return teamConfigs;
+    public static Map<Team, TeamConfig> getTeamsConfig() {
+        return teamsConfig;
     }
 }
