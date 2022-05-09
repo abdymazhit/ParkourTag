@@ -32,12 +32,12 @@ public class LobbyBoard extends Board {
         Team statusTeam = scoreboard.registerNewTeam("status");
         statusTeam.addEntry("§l");
         Team playersTeam = scoreboard.registerNewTeam("players");
-        playersTeam.addEntry("§e§lPlayers: §r");
+        playersTeam.addEntry("§e§lPlayers§r: ");
 
         List<Score> scores = new ArrayList<>();
-        scores.add(objective.getScore("§b§lMap: §r" + Config.getMapName()));
+        scores.add(objective.getScore("§b§lMap§r: " + Config.getMapName()));
+        scores.add(objective.getScore("§e§lPlayers§r: "));
         scores.add(objective.getScore(""));
-        scores.add(objective.getScore("§e§lPlayers: §r"));
         scores.add(objective.getScore("§l"));
         for(int i = 0; i < scores.size(); i++) {
             Score score = scores.get(i);
@@ -97,7 +97,7 @@ public class LobbyBoard extends Board {
                 throw new IllegalArgumentException("Error getting player's scoreboard 'status' team");
             }
 
-            team.setSuffix("§cGame begins: §r" + time);
+            team.setSuffix("§cGame begins§r: " + time);
         }
     }
 }

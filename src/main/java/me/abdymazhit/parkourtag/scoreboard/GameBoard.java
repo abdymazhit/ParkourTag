@@ -32,7 +32,7 @@ public class GameBoard extends TeamBoard {
         objective.setDisplayName("§e§lParkour Tag");
 
         Team roundTeam = scoreboard.registerNewTeam("round");
-        roundTeam.addEntry("§a§lRound: §r");
+        roundTeam.addEntry("§a§lRound§r: ");
         Team statusTeam = scoreboard.registerNewTeam("status");
         statusTeam.addEntry("§c§l");
 
@@ -65,8 +65,8 @@ public class GameBoard extends TeamBoard {
         enemyTeam.addEntry("§c§lB§r: ");
 
         List<Score> scores = new ArrayList<>();
-        scores.add(objective.getScore("§b§lMap: §r" + Config.getMapName()));
-        scores.add(objective.getScore("§a§lRound: §r"));
+        scores.add(objective.getScore("§b§lMap§r: " + Config.getMapName()));
+        scores.add(objective.getScore("§a§lRound§r: "));
         scores.add(objective.getScore("§c§l"));
         scores.add(objective.getScore(" "));
         scores.add(objective.getScore("§b§lGame Coins§r:"));
