@@ -1,7 +1,7 @@
 # Map name
 mapName: Test
 
-# Min - 2, default - 4
+# Number of players on each team, min - 2
 playersInTeam: 2
 
 # Time until the game starts when there are enough players, min - 1
@@ -16,7 +16,25 @@ roundStartTime: 5
 # Time of each round, min - 1
 roundTime: 60
 
-# Min - 2, default - 8
+# World where the game will take place
+world: world
+
+# Location where players will spawn at the start of the game to wait for other players
+lobbyLoc: 0.0, 0.0, 0.0, 0, 0
+
+# Location of the first team, where the teams must meet eyes and choose hunters
+firstTeamLoc: 0.0, 0.0, 0.0, 0, 0
+
+# Location of the second team, where the teams must meet eyes and choose hunters
+secondTeamLoc: 0.0, 0.0, 0.0, 0, 0
+
+# Location where the hunter will spawn
+hunterLoc: 0.0, 0.0, 0.0, 0, 0
+
+# Location where runners will spawn
+runnersLoc: 0.0, 0.0, 0.0, 0, 0
+
+# List of game teams, min - 2
 teams:
   -
     name: Red

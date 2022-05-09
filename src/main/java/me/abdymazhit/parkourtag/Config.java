@@ -1,12 +1,16 @@
 package me.abdymazhit.parkourtag;
 
 import me.abdymazhit.custom.Team;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Represents the game configuration
@@ -38,6 +42,30 @@ public class Config {
      */
     private static int roundTime;
     /**
+     * Represents the world in which the game will take place
+     */
+    public static World world;
+    /**
+     * Represents the location where players will spawn at the start of the game to wait for other players
+     */
+    public static Location lobbyLocation;
+    /**
+     * Represents the location of the first team, where the teams must meet eyes and choose hunters
+     */
+    public static Location firstTeamLocation;
+    /**
+     * Represents the location of the second team, where the teams must meet eyes and choose hunters
+     */
+    public static Location secondTeamLocation;
+    /**
+     * Represents the location where the hunter will spawn
+     */
+    public static Location hunterLocation;
+    /**
+     * Represents the location where runners will spawn
+     */
+    public static Location runnersLocation;
+    /**
      * Represents a list of game teams
      */
     private static List<Team> teams;
@@ -57,6 +85,13 @@ public class Config {
         hunterSelectionTime = config.getInt("hunterSelectionTime");
         roundStartTime = config.getInt("roundStartTime");
         roundTime = config.getInt("roundTime");
+
+        world = Bukkit.getWorld(Objects.requireNonNull(config.getString("world")));
+        lobbyLocation = getLocation(config.getString("lobbyLoc"));
+        firstTeamLocation = getLocation(config.getString("firstTeamLoc"));
+        secondTeamLocation = getLocation(config.getString("secondTeamLoc"));
+        hunterLocation = getLocation(config.getString("hunterLoc"));
+        runnersLocation = getLocation(config.getString("runnersLoc"));
 
         teams = new ArrayList<>();
         for(Map<?, ?> team : config.getMapList("teams")) {
@@ -85,9 +120,59 @@ public class Config {
             throw new IllegalArgumentException("The time of each round must be greater than or equal to 1");
         }
 
+        if(world == null) {
+            throw new IllegalArgumentException("The world in which the game will take place must be correct");
+        }
+
+        if(lobbyLocation == null) {
+            throw new IllegalArgumentException("The location where players will spawn at the start of the game to wait for other players must be correct");
+        }
+
+        if(firstTeamLocation == null) {
+            throw new IllegalArgumentException("The location of the first team, where the teams must meet eyes and choose hunters must be correct");
+        }
+
+        if(secondTeamLocation == null) {
+            throw new IllegalArgumentException("The location of the second team, where the teams must meet eyes and choose hunters must be correct");
+        }
+
+        if(hunterLocation == null) {
+            throw new IllegalArgumentException("The location where the hunter will spawn must be correct");
+        }
+
+        if(runnersLocation == null) {
+            throw new IllegalArgumentException("The location where runners will spawn must be correct");
+        }
+
         if(teams.size() < 2) {
             throw new IllegalArgumentException("The number of teams must be greater than or equal to 2");
         }
+    }
+
+    /**
+     * Gets the location from the config file object
+     * @param object Config file object
+     * @return the location
+     */
+    private static Location getLocation(Object object) {
+        String stringLocation = (String) object;
+        String[] locArgs = stringLocation.split(",");
+
+        if(locArgs.length < 3 || locArgs.length == 4 || locArgs.length > 5) {
+            return null;
+        }
+
+        double x = Double.parseDouble(locArgs[0]);
+        double y = Double.parseDouble(locArgs[1]);
+        double z = Double.parseDouble(locArgs[2]);
+
+        if (locArgs.length == 5) {
+            float yaw = Float.parseFloat(locArgs[3]);
+            float pitch = Float.parseFloat(locArgs[4]);
+            return new Location(world, x, y, z, yaw, pitch);
+        }
+
+        return new Location(world, x, y, z);
     }
 
     /**
@@ -136,6 +221,54 @@ public class Config {
      */
     public static int getRoundTime() {
         return roundTime;
+    }
+
+    /**
+     * Gets the world in which the game will take place
+     * @return the world in which the game will take place
+     */
+    public static World getWorld() {
+        return world;
+    }
+
+    /**
+     * Gets the location where players will spawn at the start of the game to wait for other players
+     * @return the location where players will spawn at the start of the game to wait for other players
+     */
+    public static Location getLobbyLocation() {
+        return lobbyLocation;
+    }
+
+    /**
+     * Gets the location of the first team, where the teams must meet eyes and choose hunters
+     * @return the location of the first team, where the teams must meet eyes and choose hunters
+     */
+    public static Location getFirstTeamLocation() {
+        return firstTeamLocation;
+    }
+
+    /**
+     * Gets the location of the second team, where the teams must meet eyes and choose hunters
+     * @return the location of the second team, where the teams must meet eyes and choose hunters
+     */
+    public static Location getSecondTeamLocation() {
+        return secondTeamLocation;
+    }
+
+    /**
+     * Gets the location where the hunter will spawn
+     * @return the location where the hunter will spawn
+     */
+    public static Location getHunterLocation() {
+        return hunterLocation;
+    }
+
+    /**
+     * Gets the location where runners will spawn
+     * @return the location where runners will spawn
+     */
+    public static Location getRunnersLocation() {
+        return runnersLocation;
     }
 
     /**
