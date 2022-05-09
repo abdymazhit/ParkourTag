@@ -41,6 +41,10 @@ public class Team {
      * Represents a list of caught runners
      */
     private final List<Player> caughtRunners;
+    /**
+     * Represents team coins
+     */
+    private int coins;
 
     /**
      * Creates a team with the given parameters
@@ -53,6 +57,7 @@ public class Team {
         players = new ArrayList<>();
         runners = new ArrayList<>();
         caughtRunners = new ArrayList<>();
+        coins = 0;
     }
 
     /**
@@ -69,6 +74,14 @@ public class Team {
      */
     public String getColor() {
         return color;
+    }
+
+    /**
+     * Gets the display name of the team
+     * @return the display name of the team
+     */
+    public String getDisplayName() {
+        return color + name;
     }
 
     /**
@@ -167,5 +180,21 @@ public class Team {
      */
     public List<Player> getCaughtRunners() {
         return caughtRunners;
+    }
+
+    /**
+     * Adds team coins
+     * @param coins team coins
+     */
+    public void addCoins(int coins) {
+        this.coins += coins;
+    }
+
+    /**
+     * Gets team coins
+     * @return team coins
+     */
+    public int getCoins() {
+        return coins;
     }
 }
