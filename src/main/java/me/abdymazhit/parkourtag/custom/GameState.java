@@ -1,4 +1,4 @@
-package me.abdymazhit.custom;
+package me.abdymazhit.parkourtag.custom;
 
 /**
  * Represents a game state

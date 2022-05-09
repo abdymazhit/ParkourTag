@@ -1,14 +1,13 @@
 package me.abdymazhit.parkourtag;
 
-import me.abdymazhit.custom.GameState;
-import me.abdymazhit.custom.Team;
-import me.abdymazhit.custom.TeamConfig;
+import me.abdymazhit.parkourtag.custom.GameState;
+import me.abdymazhit.parkourtag.custom.Team;
+import me.abdymazhit.parkourtag.scoreboard.LobbyBoard;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Represents the game manager
@@ -32,18 +31,19 @@ public class GameManager {
      */
     private static final List<Player> spectators = new ArrayList<>();
     /**
-     * Represents a teams configuration
+     * Represents the scoreboard of the game stage WAITING, STARTING
      */
-    private static final Map<Team, TeamConfig> teamsConfig = new HashMap<>();
+    private static LobbyBoard lobbyBoard;
+    /**
+     * Represents the game time task
+     */
+    private static BukkitTask task;
 
     /**
-     * Setups teams config
-     * @param teams List of teams
+     * Setups the game manager
      */
-    public static void setupTeamsConfig(List<Team> teams) {
-        for(Team team : teams) {
-            teamsConfig.put(team, null);
-        }
+    public static void setup() {
+        lobbyBoard = new LobbyBoard();
     }
 
     /**
@@ -51,10 +51,17 @@ public class GameManager {
      * @param gameState Game state
      */
     public static void setGameState(GameState gameState) {
-        if(gameState.equals(GameState.GAME)) {
-            waitingGamePlayers.clear();
-        }
         GameManager.gameState = gameState;
+        if(gameState.equals(GameState.GAME)) {
+            lobbyBoard = null;
+            for(Team team : Config.getTeams()) {
+                team.setGameTeamBoard();
+            }
+        } else if(gameState.equals(GameState.ENDING)) {
+            for(Team team : Config.getTeams()) {
+                team.setEndTeamBoard();
+            }
+        }
     }
 
     /**
@@ -62,8 +69,8 @@ public class GameManager {
      */
     public static void startNextRound() {
         round++;
-        for(TeamConfig teamConfig : teamsConfig.values()) {
-            teamConfig.clearPlayerRoles();
+        for(Team team : Config.getTeams()) {
+            team.clearPlayerRoles();
         }
     }
 
@@ -84,11 +91,40 @@ public class GameManager {
     }
 
     /**
+     * Adds a player to a list of waiting game players
+     * @param player Player
+     */
+    public static void addWaitingGamePlayer(Player player) {
+        removeSpectator(player);
+        waitingGamePlayers.add(player);
+        lobbyBoard.setScoreboard(player);
+        lobbyBoard.updatePlayersCount();
+    }
+
+    /**
      * Gets a list of waiting game players
      * @return a list of waiting game players
      */
     public static List<Player> getWaitingGamePlayers() {
         return waitingGamePlayers;
+    }
+
+    /**
+     * Removes a player from a list of waiting game players
+     * @param player Player
+     */
+    public static void removeWaitingGamePlayer(Player player) {
+        waitingGamePlayers.remove(player);
+        lobbyBoard.updatePlayersCount();
+    }
+
+    /**
+     * Adds a player to a list of spectators
+     * @param player Player
+     */
+    public static void addSpectator(Player player) {
+        removeWaitingGamePlayer(player);
+        spectators.add(player);
     }
 
     /**
@@ -100,10 +136,34 @@ public class GameManager {
     }
 
     /**
-     * Gets a teams configuration
-     * @return a teams configuration
+     * Removes a player from the list of spectators
+     * @param player Player
      */
-    public static Map<Team, TeamConfig> getTeamsConfig() {
-        return teamsConfig;
+    public static void removeSpectator(Player player) {
+        spectators.remove(player);
+    }
+
+    /**
+     * Gets the scoreboard of the game stage WAITING, STARTING
+     * @return the scoreboard of the game stage WAITING, STARTING
+     */
+    public static LobbyBoard getLobbyBoard() {
+        return lobbyBoard;
+    }
+
+    /**
+     * Sets the game time task
+     * @param task the game time task
+     */
+    public static void setTask(BukkitTask task) {
+        GameManager.task = task;
+    }
+
+    /**
+     * Gets the game time task
+     * @return the game time task
+     */
+    public static BukkitTask getTask() {
+        return task;
     }
 }

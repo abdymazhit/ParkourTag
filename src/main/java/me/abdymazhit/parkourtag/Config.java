@@ -1,6 +1,6 @@
 package me.abdymazhit.parkourtag;
 
-import me.abdymazhit.custom.Team;
+import me.abdymazhit.parkourtag.custom.Team;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -69,6 +69,10 @@ public class Config {
      * Represents a list of game teams
      */
     private static List<Team> teams;
+    /**
+     * Represents the maximum count of players
+     */
+    private static int maxPlayerCount;
 
     /**
      * Loads game configuration from config file
@@ -99,6 +103,8 @@ public class Config {
             String name = (String) team.get("name");
             teams.add(new Team(color, name));
         }
+
+        maxPlayerCount = teams.size() * playersInTeam;
 
         if(playersInTeam < 2) {
             throw new IllegalArgumentException("The number of players in a team must be greater than or equal to 2");
@@ -277,5 +283,13 @@ public class Config {
      */
     public static List<Team> getTeams() {
         return teams;
+    }
+
+    /**
+     * Gets the maximum count of players
+     * @return the maximum count of players
+     */
+    public static int getMaxPlayerCount() {
+        return maxPlayerCount;
     }
 }
