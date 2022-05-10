@@ -1,6 +1,7 @@
 package me.abdymazhit.parkourtag.handlers.spigot;
 
 import me.abdymazhit.parkourtag.GameManager;
+import me.abdymazhit.parkourtag.events.PlayerRemoveEvent;
 import me.abdymazhit.parkourtag.events.SpectatorRemoveEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -17,7 +18,10 @@ public class PlayerQuitHandler implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        if(GameManager.getSpectators().contains(player)) {
+        if(GameManager.getWaitingGamePlayers().contains(player)) {
+            PlayerRemoveEvent playerRemoveEvent = new PlayerRemoveEvent(player);
+            Bukkit.getPluginManager().callEvent(playerRemoveEvent);
+        } else if(GameManager.getSpectators().contains(player)) {
             SpectatorRemoveEvent spectatorRemoveEvent = new SpectatorRemoveEvent(player);
             Bukkit.getPluginManager().callEvent(spectatorRemoveEvent);
         }

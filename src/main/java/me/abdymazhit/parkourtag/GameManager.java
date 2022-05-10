@@ -119,6 +119,13 @@ public class GameManager {
     }
 
     /**
+     * Clears a list of waiting game players
+     */
+    public static void clearWaitingGamePlayersList() {
+        waitingGamePlayers.clear();
+    }
+
+    /**
      * Adds a player to a list of spectators
      * @param player Player
      */

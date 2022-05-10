@@ -1,5 +1,7 @@
 package me.abdymazhit.parkourtag;
 
+import me.abdymazhit.parkourtag.handlers.game.PlayerAddHandler;
+import me.abdymazhit.parkourtag.handlers.game.PlayerRemoveHandler;
 import me.abdymazhit.parkourtag.handlers.game.SpectatorAddHandler;
 import me.abdymazhit.parkourtag.handlers.game.SpectatorRemoveHandler;
 import me.abdymazhit.parkourtag.handlers.spigot.PlayerJoinHandler;
@@ -31,6 +33,8 @@ public class ParkourTag extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerQuitHandler(), this);
 
         // game events
+        getServer().getPluginManager().registerEvents(new PlayerAddHandler(), this);
+        getServer().getPluginManager().registerEvents(new PlayerRemoveHandler(), this);
         getServer().getPluginManager().registerEvents(new SpectatorAddHandler(), this);
         getServer().getPluginManager().registerEvents(new SpectatorRemoveHandler(), this);
 

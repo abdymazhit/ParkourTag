@@ -3,6 +3,7 @@ package me.abdymazhit.parkourtag.handlers.spigot;
 import me.abdymazhit.parkourtag.Config;
 import me.abdymazhit.parkourtag.GameManager;
 import me.abdymazhit.parkourtag.custom.Team;
+import me.abdymazhit.parkourtag.events.PlayerAddEvent;
 import me.abdymazhit.parkourtag.events.SpectatorAddEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -41,6 +42,10 @@ public class PlayerJoinHandler implements Listener {
 
         Event gameEvent;
         switch(GameManager.getGameState()) {
+            case WAITING:
+                gameEvent = new PlayerAddEvent(player);
+                Bukkit.getPluginManager().callEvent(gameEvent);
+                break;
             case STARTING:
                 gameEvent = new SpectatorAddEvent(player);
                 Bukkit.getPluginManager().callEvent(gameEvent);
