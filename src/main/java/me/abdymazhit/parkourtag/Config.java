@@ -7,10 +7,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Represents the game configuration
@@ -99,9 +96,9 @@ public class Config {
 
         teams = new ArrayList<>();
         for(Map<?, ?> team : config.getMapList("teams")) {
-            String color = (String) team.get("color");
             String name = (String) team.get("name");
-            teams.add(new Team(color, name));
+            String color = (String) team.get("color");
+            teams.add(new Team(name, color));
         }
 
         maxPlayerCount = teams.size() * playersInTeam;
@@ -179,6 +176,22 @@ public class Config {
         }
 
         return new Location(world, x, y, z);
+    }
+
+    /**
+     * Rotates a list of game teams for a round-robin tournament system.
+     */
+    public static void rotateTeamsList() {
+        if(!teams.isEmpty()) {
+            Team firstElement = teams.get(0);
+            Team lastElement = teams.get(teams.size() - 1);
+
+            List<Team> rotatedArray = new ArrayList<>(Arrays.asList(firstElement, lastElement));
+            for(int i = 1; i < teams.size() - 1; i++) {
+                rotatedArray.add(teams.get(i));
+            }
+            teams = rotatedArray;
+        }
     }
 
     /**

@@ -8,6 +8,10 @@ import java.util.List;
 public class Round {
 
     /**
+     * Represents the round number
+     */
+    public static int number = 0;
+    /**
      * Represents the matches of the round
      */
     private final List<Match> matches;

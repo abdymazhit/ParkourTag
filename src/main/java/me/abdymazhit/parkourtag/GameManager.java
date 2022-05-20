@@ -1,6 +1,8 @@
 package me.abdymazhit.parkourtag;
 
 import me.abdymazhit.parkourtag.custom.GameState;
+import me.abdymazhit.parkourtag.custom.Match;
+import me.abdymazhit.parkourtag.custom.Round;
 import me.abdymazhit.parkourtag.custom.Team;
 import me.abdymazhit.parkourtag.scoreboard.LobbyBoard;
 import org.bukkit.entity.Player;
@@ -19,10 +21,6 @@ public class GameManager {
      */
     private static GameState gameState = GameState.WAITING;
     /**
-     * Represents the game round number
-     */
-    private static int round = 0;
-    /**
      * Represents a list of waiting game players
      */
     private static final List<Player> waitingGamePlayers = new ArrayList<>();
@@ -34,6 +32,10 @@ public class GameManager {
      * Represents the scoreboard of the game stage WAITING, STARTING
      */
     private static LobbyBoard lobbyBoard;
+    /**
+     * Represents a game round
+     */
+    private static Round round;
     /**
      * Represents the game time task
      */
@@ -68,10 +70,36 @@ public class GameManager {
      * Starts the next round of the game
      */
     public static void startNextRound() {
-        round++;
-        for(Team team : Config.getTeams()) {
-            team.clearPlayerRoles();
+        Round.number++;
+        round = new Round(organizeMatches());
+    }
+
+    /**
+     * Organize matches between teams
+     * @return Matches between teams
+     */
+    private static List<Match> organizeMatches() {
+        List<Team> teams = new ArrayList<>(Config.getTeams());
+        if(teams.size() % 2 == 1) {
+            teams.add(null);
         }
+
+        List<Match> matches = new ArrayList<>();
+        while(teams.size() != 0) {
+            Team firstTeam = teams.get(0);
+            Team secondTeam = teams.get(teams.size() - 1);
+            if(firstTeam != null && secondTeam != null) {
+                matches.add(new Match(firstTeam, secondTeam));
+            }
+
+            teams.remove(0);
+            teams.remove(teams.size() - 1);
+        }
+
+        // rotate a list of game teams for next time
+        Config.rotateTeamsList();
+
+        return matches;
     }
 
     /**
@@ -80,14 +108,6 @@ public class GameManager {
      */
     public static GameState getGameState() {
         return gameState;
-    }
-
-    /**
-     * Gets the game round number
-     * @return the game round number
-     */
-    public static int getRound() {
-        return round;
     }
 
     /**
@@ -156,6 +176,14 @@ public class GameManager {
      */
     public static LobbyBoard getLobbyBoard() {
         return lobbyBoard;
+    }
+
+    /**
+     * Gets a game round
+     * @return a game round
+     */
+    public static Round getRound() {
+        return round;
     }
 
     /**
