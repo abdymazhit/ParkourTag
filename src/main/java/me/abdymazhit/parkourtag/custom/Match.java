@@ -23,6 +23,10 @@ public class Match {
      * Represents information about the second team
      */
     private TeamInfo secondTeamInfo;
+    /**
+     * Represents the match state
+     */
+    private MatchState matchState;
 
     /**
      * Creates a match between two teams
@@ -32,6 +36,7 @@ public class Match {
     public Match(Team firstTeam, Team secondTeam) {
         this.firstTeam = firstTeam;
         this.secondTeam = secondTeam;
+        matchState = MatchState.SELECTING_HUNTER;
     }
 
     /**
@@ -82,5 +87,21 @@ public class Match {
      */
     public TeamInfo getSecondTeamInfo() {
         return secondTeamInfo;
+    }
+
+    /**
+     * Sets the match state
+     * @param matchState Match state
+     */
+    public void setMatchState(MatchState matchState) {
+        this.matchState = matchState;
+    }
+
+    /**
+     * Gets the match state
+     * @return the match state
+     */
+    public MatchState getMatchState() {
+        return matchState;
     }
 }
