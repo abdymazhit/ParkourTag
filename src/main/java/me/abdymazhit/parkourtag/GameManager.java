@@ -4,7 +4,9 @@ import me.abdymazhit.parkourtag.custom.GameState;
 import me.abdymazhit.parkourtag.custom.Match;
 import me.abdymazhit.parkourtag.custom.Round;
 import me.abdymazhit.parkourtag.custom.Team;
+import me.abdymazhit.parkourtag.events.GameStartEvent;
 import me.abdymazhit.parkourtag.scoreboard.LobbyBoard;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -119,6 +121,11 @@ public class GameManager {
         waitingGamePlayers.add(player);
         lobbyBoard.setScoreboard(player);
         lobbyBoard.updatePlayersCount();
+
+        if(waitingGamePlayers.size() == Config.getMaxPlayerCount()) {
+            GameStartEvent event = new GameStartEvent();
+            Bukkit.getPluginManager().callEvent(event);
+        }
     }
 
     /**

@@ -168,7 +168,7 @@ public class GameBoard extends TeamBoard {
             int forthTeamPlace;
             me.abdymazhit.parkourtag.custom.Team forth;
 
-            if(first == team) {
+            if(first.equals(team)) {
                 secondTeamPlace = 2;
                 second = teams.get(1);
 
@@ -181,7 +181,7 @@ public class GameBoard extends TeamBoard {
                 int currentTeamPlace = 0;
                 for(int i = 0; i < teams.size(); i++) {
                     me.abdymazhit.parkourtag.custom.Team t = teams.get(i);
-                    if(t == team) {
+                    if(t.equals(team)) {
                         currentTeamPlace = i + 1;
                         break;
                     }

@@ -1,9 +1,6 @@
 package me.abdymazhit.parkourtag;
 
-import me.abdymazhit.parkourtag.handlers.game.PlayerAddHandler;
-import me.abdymazhit.parkourtag.handlers.game.PlayerRemoveHandler;
-import me.abdymazhit.parkourtag.handlers.game.SpectatorAddHandler;
-import me.abdymazhit.parkourtag.handlers.game.SpectatorRemoveHandler;
+import me.abdymazhit.parkourtag.handlers.game.*;
 import me.abdymazhit.parkourtag.handlers.spigot.PlayerJoinHandler;
 import me.abdymazhit.parkourtag.handlers.spigot.PlayerQuitHandler;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -37,6 +34,7 @@ public class ParkourTag extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerRemoveHandler(), this);
         getServer().getPluginManager().registerEvents(new SpectatorAddHandler(), this);
         getServer().getPluginManager().registerEvents(new SpectatorRemoveHandler(), this);
+        getServer().getPluginManager().registerEvents(new GameStartHandler(), this);
 
         getLogger().info("ParkourTag plugin successfully enabled!");
     }
