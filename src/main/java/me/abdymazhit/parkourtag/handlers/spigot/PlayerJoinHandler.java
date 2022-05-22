@@ -3,6 +3,7 @@ package me.abdymazhit.parkourtag.handlers.spigot;
 import me.abdymazhit.parkourtag.Config;
 import me.abdymazhit.parkourtag.GameManager;
 import me.abdymazhit.parkourtag.custom.Team;
+import me.abdymazhit.parkourtag.events.GamePlayerAddEvent;
 import me.abdymazhit.parkourtag.events.PlayerAddEvent;
 import me.abdymazhit.parkourtag.events.SpectatorAddEvent;
 import org.bukkit.Bukkit;
@@ -40,31 +41,31 @@ public class PlayerJoinHandler implements Listener {
         player.getInventory().clear();
         player.closeInventory();
 
-        Event gameEvent;
+        Event gameEvent = null;
         switch(GameManager.getGameState()) {
             case WAITING:
                 gameEvent = new PlayerAddEvent(player);
-                Bukkit.getPluginManager().callEvent(gameEvent);
                 break;
             case STARTING:
                 gameEvent = new SpectatorAddEvent(player);
-                Bukkit.getPluginManager().callEvent(gameEvent);
                 break;
             case GAME:
             case ENDING:
-                boolean isGamePlayer = false;
                 for(Team team : Config.getTeams()) {
                     if(team.getPlayers().contains(player)) {
-                        isGamePlayer = true;
+                        gameEvent = new GamePlayerAddEvent(player, team);
                         break;
                     }
                 }
 
-                if(!isGamePlayer) {
+                if(gameEvent == null) {
                     gameEvent = new SpectatorAddEvent(player);
-                    Bukkit.getPluginManager().callEvent(gameEvent);
                 }
                 break;
+        }
+
+        if(gameEvent != null) {
+            Bukkit.getPluginManager().callEvent(gameEvent);
         }
     }
 }
