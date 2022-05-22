@@ -32,9 +32,12 @@ public class ParkourTag extends JavaPlugin {
         // game events
         getServer().getPluginManager().registerEvents(new PlayerAddHandler(), this);
         getServer().getPluginManager().registerEvents(new PlayerRemoveHandler(), this);
+        getServer().getPluginManager().registerEvents(new GamePlayerAddHandler(), this);
+        getServer().getPluginManager().registerEvents(new GamePlayerRemoveHandler(), this);
         getServer().getPluginManager().registerEvents(new SpectatorAddHandler(), this);
         getServer().getPluginManager().registerEvents(new SpectatorRemoveHandler(), this);
         getServer().getPluginManager().registerEvents(new GameStartHandler(), this);
+        getServer().getPluginManager().registerEvents(new RunnerCatchHandler(), this);
 
         getLogger().info("ParkourTag plugin successfully enabled!");
     }

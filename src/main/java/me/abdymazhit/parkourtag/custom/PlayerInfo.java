@@ -14,7 +14,7 @@ public class PlayerInfo {
     /**
      * Represents a player's role
      */
-    private final Role role;
+    private Role role;
     /**
      * Represents the number of player coins earned
      */
@@ -37,6 +37,14 @@ public class PlayerInfo {
      */
     public Player getPlayer() {
         return player;
+    }
+
+    /**
+     * Sets the player's role
+     * @param role Player's role
+     */
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     /**
