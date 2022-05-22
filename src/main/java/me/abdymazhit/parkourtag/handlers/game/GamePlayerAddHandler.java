@@ -2,8 +2,10 @@ package me.abdymazhit.parkourtag.handlers.game;
 
 import me.abdymazhit.parkourtag.Config;
 import me.abdymazhit.parkourtag.GameManager;
+import me.abdymazhit.parkourtag.ParkourTag;
 import me.abdymazhit.parkourtag.custom.*;
 import me.abdymazhit.parkourtag.events.GamePlayerAddEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,7 +23,19 @@ public class GamePlayerAddHandler implements Listener {
 
         if(GameManager.getGameState().equals(GameState.ENDING)) {
             player.teleport(Config.getRunnersLocation());
+
+            // make all players visible to each other
+            for(Player p : Bukkit.getOnlinePlayers()) {
+                for(Player p2 : Bukkit.getOnlinePlayers()) {
+                    p.showPlayer(ParkourTag.getInstance(), p2);
+                }
+            }
             return;
+        }
+
+        // make spectators invisible to the player
+        for(Player spectator : GameManager.getSpectators()) {
+            player.hidePlayer(ParkourTag.getInstance(), spectator);
         }
 
         for(Match match : GameManager.getRound().getMatches()) {
@@ -32,6 +46,15 @@ public class GamePlayerAddHandler implements Listener {
                 teamNumber = 2;
             } else {
                 continue;
+            }
+
+            // make players invisible to the player who are not participating in this match
+            for(Team t : Config.getTeams()) {
+                if(!t.equals(match.getFirstTeam()) && !t.equals(match.getSecondTeam())) {
+                    for(Player p : t.getPlayers()) {
+                        player.hidePlayer(ParkourTag.getInstance(), p);
+                    }
+                }
             }
 
             switch(match.getMatchState()) {
@@ -50,9 +73,11 @@ public class GamePlayerAddHandler implements Listener {
 
                     switch(playerInfo.getRole()) {
                         case HUNTER:
+                            setInvisiblePlayersForHunter(teamNumber, match, player);
                             player.teleport(Config.getHunterLocation());
                             break;
                         case RUNNER:
+                            setInvisiblePlayersForRunner(teamNumber, match, player);
                             player.teleport(Config.getRunnersLocation());
                             break;
                     }
@@ -65,15 +90,18 @@ public class GamePlayerAddHandler implements Listener {
 
                     switch(playerInfo.getRole()) {
                         case HUNTER:
+                            setInvisiblePlayersForHunter(teamNumber, match, player);
                             player.teleport(Config.getHunterLocation());
                             break;
                         case CAUGHT_RUNNER:
+                            setInvisiblePlayersForRunner(teamNumber, match, player);
                             player.teleport(Config.getRunnersLocation());
                             break;
                     }
                     break;
                 case WAITING_FOR_OTHER_MATCHES:
                 case ENDING:
+                    setInvisiblePlayersForHunter(teamNumber, match, player);
                     player.teleport(Config.getRunnersLocation());
                     break;
             }
@@ -105,5 +133,79 @@ public class GamePlayerAddHandler implements Listener {
             }
         }
         return playerInfo;
+    }
+
+    /**
+     * Sets invisible players for the hunter
+     * @param teamNumber Team number
+     * @param match Match the hunter is playing
+     * @param player Hunter of the match
+     */
+    private void setInvisiblePlayersForHunter(int teamNumber, Match match, Player player) {
+        if(teamNumber == 1) {
+            // make teammates invisible to the player
+            for(Player p : match.getFirstTeam().getPlayers()) {
+                player.hidePlayer(ParkourTag.getInstance(), p);
+            }
+
+            // make only the runners of the enemy team visible to the player
+            for(PlayerInfo pInfo : match.getSecondTeamInfo().getPlayersInfo()) {
+                if(!pInfo.getRole().equals(Role.RUNNER)) {
+                    player.hidePlayer(ParkourTag.getInstance(), pInfo.getPlayer());
+                }
+            }
+        } else {
+            // make teammates invisible to the player
+            for(Player p : match.getSecondTeam().getPlayers()) {
+                player.hidePlayer(ParkourTag.getInstance(), p);
+            }
+
+            // make only the runners of the enemy team visible to the player
+            for(PlayerInfo pInfo : match.getFirstTeamInfo().getPlayersInfo()) {
+                if(!pInfo.getRole().equals(Role.RUNNER)) {
+                    player.hidePlayer(ParkourTag.getInstance(), pInfo.getPlayer());
+                }
+            }
+        }
+    }
+
+    /**
+     * Sets invisible players for the runner
+     * @param teamNumber Team number
+     * @param match Match the hunter is playing
+     * @param player Runner of the match
+     */
+    private void setInvisiblePlayersForRunner(int teamNumber, Match match, Player player) {
+        if(teamNumber == 1) {
+            // make teammate hunter invisible to the player
+            for(PlayerInfo pInfo : match.getFirstTeamInfo().getPlayersInfo()) {
+                if(pInfo.getRole().equals(Role.HUNTER)) {
+                    player.hidePlayer(ParkourTag.getInstance(), pInfo.getPlayer());
+                    break;
+                }
+            }
+
+            // make enemy runners invisible to the player
+            for(PlayerInfo pInfo : match.getSecondTeamInfo().getPlayersInfo()) {
+                if(pInfo.getRole().equals(Role.RUNNER) || pInfo.getRole().equals(Role.CAUGHT_RUNNER)) {
+                    player.hidePlayer(ParkourTag.getInstance(), pInfo.getPlayer());
+                }
+            }
+        } else {
+            // make teammate hunter invisible to the player
+            for(PlayerInfo pInfo : match.getSecondTeamInfo().getPlayersInfo()) {
+                if(pInfo.getRole().equals(Role.HUNTER)) {
+                    player.hidePlayer(ParkourTag.getInstance(), pInfo.getPlayer());
+                    break;
+                }
+            }
+
+            // make enemy runners invisible to the player
+            for(PlayerInfo pInfo : match.getFirstTeamInfo().getPlayersInfo()) {
+                if(pInfo.getRole().equals(Role.RUNNER) || pInfo.getRole().equals(Role.CAUGHT_RUNNER)) {
+                    player.hidePlayer(ParkourTag.getInstance(), pInfo.getPlayer());
+                }
+            }
+        }
     }
 }

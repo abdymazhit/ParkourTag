@@ -2,6 +2,7 @@ package me.abdymazhit.parkourtag.handlers.game;
 
 import me.abdymazhit.parkourtag.Config;
 import me.abdymazhit.parkourtag.GameManager;
+import me.abdymazhit.parkourtag.ParkourTag;
 import me.abdymazhit.parkourtag.events.PlayerAddEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,5 +20,10 @@ public class PlayerAddHandler implements Listener {
         player.teleport(Config.getLobbyLocation());
 
         GameManager.addWaitingGamePlayer(player);
+
+        // make spectators invisible to the player
+        for(Player spectator : GameManager.getSpectators()) {
+            player.hidePlayer(ParkourTag.getInstance(), spectator);
+        }
     }
 }
