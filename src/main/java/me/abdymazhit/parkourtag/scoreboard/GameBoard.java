@@ -300,7 +300,7 @@ public class GameBoard extends TeamBoard {
      * Updates the counter of alive runners of enemies
      * @param aliveRunnersCount Number of alive runners
      */
-    public void updateEnemyTeamRunnersCounter(int aliveRunnersCount) {
+    public void updateEnemyTeamAliveRunnersCounter(int aliveRunnersCount) {
         for(Player p : team.getPlayers()) {
             Team team = p.getScoreboard().getTeam("enemy");
             if(team == null) {

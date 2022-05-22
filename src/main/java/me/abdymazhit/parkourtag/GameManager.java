@@ -60,10 +60,12 @@ public class GameManager {
             lobbyBoard = null;
             for(Team team : Config.getTeams()) {
                 team.setGameTeamBoard();
+                team.getTeamBoard().setTeamScoreboard();
             }
         } else if(gameState.equals(GameState.ENDING)) {
             for(Team team : Config.getTeams()) {
                 team.setEndTeamBoard();
+                team.getTeamBoard().setTeamScoreboard();
             }
         }
     }

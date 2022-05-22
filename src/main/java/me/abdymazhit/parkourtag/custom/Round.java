@@ -1,5 +1,8 @@
 package me.abdymazhit.parkourtag.custom;
 
+import me.abdymazhit.parkourtag.events.RoundStartEvent;
+import org.bukkit.Bukkit;
+
 import java.util.List;
 
 /**
@@ -22,6 +25,9 @@ public class Round {
      */
     public Round(List<Match> matches) {
         this.matches = matches;
+
+        RoundStartEvent event = new RoundStartEvent();
+        Bukkit.getPluginManager().callEvent(event);
     }
 
     /**
