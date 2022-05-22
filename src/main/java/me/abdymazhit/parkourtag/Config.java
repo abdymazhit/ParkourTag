@@ -41,27 +41,27 @@ public class Config {
     /**
      * Represents the world in which the game will take place
      */
-    public static World world;
+    private static World world;
     /**
      * Represents the location where players will spawn at the start of the game to wait for other players
      */
-    public static Location lobbyLocation;
+    private static Location lobbyLocation;
     /**
      * Represents the location of the first team, where the teams must meet eyes and choose hunters
      */
-    public static Location firstTeamLocation;
+    private static Location firstTeamLocation;
     /**
      * Represents the location of the second team, where the teams must meet eyes and choose hunters
      */
-    public static Location secondTeamLocation;
+    private static Location secondTeamLocation;
     /**
      * Represents the location where the hunter will spawn
      */
-    public static Location hunterLocation;
+    private static Location hunterLocation;
     /**
      * Represents the location where runners will spawn
      */
-    public static Location runnersLocation;
+    private static Location runnersLocation;
     /**
      * Represents a list of game teams
      */

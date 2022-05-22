@@ -7,7 +7,7 @@ import org.bukkit.event.HandlerList;
 import javax.annotation.Nonnull;
 
 /**
- * Called when the game player is added
+ * Called when a hunter catches a runner
  */
 public class RunnerCatchEvent extends Event {
 
