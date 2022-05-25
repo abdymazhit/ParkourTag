@@ -123,6 +123,7 @@ public class GameManager {
         waitingGamePlayers.add(player);
         lobbyBoard.setScoreboard(player);
         lobbyBoard.updatePlayersCount();
+        lobbyBoard.setWaitingGameStatus(player);
 
         if(waitingGamePlayers.size() == Config.getMaxPlayerCount()) {
             GameStartEvent event = new GameStartEvent();

@@ -1,5 +1,6 @@
 package me.abdymazhit.parkourtag.custom;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,17 +13,17 @@ public class Match {
      */
     private final Team firstTeam;
     /**
-     * Represents information about the first team
+     * Represents information about first team players
      */
-    private TeamInfo firstTeamInfo;
+    private final List<PlayerInfo> firstTeamPlayersInfo;
     /**
      * Represents the second team
      */
     private final Team secondTeam;
     /**
-     * Represents information about the second team
+     * Represents information about first team players
      */
-    private TeamInfo secondTeamInfo;
+    private final List<PlayerInfo> secondTeamPlayersInfo;
     /**
      * Represents the match state
      */
@@ -36,7 +37,8 @@ public class Match {
     public Match(Team firstTeam, Team secondTeam) {
         this.firstTeam = firstTeam;
         this.secondTeam = secondTeam;
-        matchState = MatchState.SELECTING_HUNTER;
+        firstTeamPlayersInfo = new ArrayList<>();
+        secondTeamPlayersInfo = new ArrayList<>();
     }
 
     /**
@@ -48,20 +50,11 @@ public class Match {
     }
 
     /**
-     * Sets information about the first team
-     * @param team Team
-     * @param playersInfo Information about players
+     * Gets information about first team players
+     * @return information about first team players
      */
-    public void setFirstTeamInfo(Team team, List<PlayerInfo> playersInfo) {
-        firstTeamInfo = new TeamInfo(team, playersInfo);
-    }
-
-    /**
-     * Gets information about the first team
-     * @return information about the first team
-     */
-    public TeamInfo getFirstTeamInfo() {
-        return firstTeamInfo;
+    public List<PlayerInfo> getFirstTeamPlayersInfo() {
+        return firstTeamPlayersInfo;
     }
 
     /**
@@ -73,20 +66,11 @@ public class Match {
     }
 
     /**
-     * Sets information about the second team
-     * @param team Team
-     * @param playersInfo Information about players
+     * Gets information about second team players
+     * @return information about second team players
      */
-    public void setSecondTeamInfo(Team team, List<PlayerInfo> playersInfo) {
-        secondTeamInfo = new TeamInfo(team, playersInfo);
-    }
-
-    /**
-     * Gets information about the second team
-     * @return information about the second team
-     */
-    public TeamInfo getSecondTeamInfo() {
-        return secondTeamInfo;
+    public List<PlayerInfo> getSecondTeamPlayersInfo() {
+        return secondTeamPlayersInfo;
     }
 
     /**
